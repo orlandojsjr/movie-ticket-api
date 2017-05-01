@@ -10,7 +10,7 @@ trait Migration extends Config {
   flyway.setDataSource(databaseUrl, databaseUser, databasePassword)
 
   def migrate() = {
-    flyway.migrate()
+    //flyway.migrate()
   }
 
   def reloadSchema() = {
