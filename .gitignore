@@ -23,4 +23,5 @@ rest.iml
 .settings/
 .travis.yml
 bin/
-project
+project/project
+project/target
