@@ -16,7 +16,7 @@ libraryDependencies ++= {
     "com.typesafe.akka"  %% "akka-http-spray-json-experimental"    % akkaStreamV,
     "com.typesafe.slick" %% "slick"                                % slickVersion,
     "org.slf4j"          %  "slf4j-nop"                            % "1.6.4",
-    "org.postgresql"     %  "postgresql"                           % "9.4-1201-jdbc41",
+    "org.postgresql"     %  "postgresql"                           % "9.4-1208",
     "org.mindrot"        %  "jbcrypt"                              % "0.3m",
     "org.flywaydb"       %  "flyway-core"                          % "3.2.1",
     "org.scalatest"      %% "scalatest"                            % scalaTestV       % "it,test",
