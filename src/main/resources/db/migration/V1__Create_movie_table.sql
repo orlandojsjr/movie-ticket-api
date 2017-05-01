@@ -1,0 +1,4 @@
+CREATE TABLE "movies" (
+  "imdbid" VARCHAR NOT NULL PRIMARY KEY,
+  "title" VARCHAR NOT NULL
+);
