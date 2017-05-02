@@ -1,0 +1,8 @@
+language: scala
+scala:
+- 2.11.7
+addons:
+  postgresql: '9.3'
+before_script:
+- psql -c 'create database "movie_ticket_test";' -U postgres
+script: sbt test
