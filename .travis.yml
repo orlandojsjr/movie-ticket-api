@@ -6,4 +6,3 @@ addons:
 before_script:
 - psql -c 'create database "movie_ticket_test";' -U postgres
 script: sbt test
-
