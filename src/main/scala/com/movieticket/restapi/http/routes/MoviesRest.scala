@@ -16,30 +16,33 @@ trait MoviesServiceRoute extends MoviesService with BaseServiceRoute {
   val moviesRoute = pathPrefix("movies") {
     pathEndOrSingleSlash {
       get {
-        complete(getMovies().map(_.toJson))
+        complete(getMovies().map(_.map(buildResponse(_).toJson)))
       } ~
         post {
            entity(as[Movie]) { movie =>
-             complete(Created -> createMovie(movie).map(_.toJson))
+             complete(Created -> createMovie(movie).map(buildResponse(_).toJson))
            }
         }
     } ~
     pathPrefix(Segment) { id =>
       pathEndOrSingleSlash {
           get {
-              complete(getMovieById(id))
+            complete(getMovieById(id).map(_.map(buildResponse(_))))
           } ~
             put {
               entity(as[Movie]) { movie =>
-                complete(updateMovie(id, movie).map(_.toJson))
+                complete(updateMovie(id, movie).map(_.map(buildResponse(_))))
               }
             } ~
               delete {
                  onSuccess(deleteMovie(id)) { ignored =>
-                    complete(NoContent)
-                  }
+                   complete(NoContent)
+                 }
               }
       }
     }
   }
+
+  def buildResponse(movie: Movie): MovieInfo = MovieInfo(movie.imdbid, movie.title, Seq(relation(movie.imdbid)))
+  def relation(id: String): Relation = Relation("self", s"/v1/movies/${id}")
 }

@@ -2,6 +2,12 @@ curl http://localhost:9000/v1/movies/
 curl --data '{"imdbid": "tt0111161", "title": "The Shawshank Redemption"}' --header "Content-Type: application/json" http://localhost:9000/v1/movies/
 
 
+curl -X PUT --data '{"imdbid": "tt0111161", "title": "The Shawshank Redemption 2"}' --header "Content-Type: application/json" http://localhost:9000/v1/movies/tt0111161
+
+
+curl --data '{"imdbid": "tt0111161", "title": "The Shawshank Redemption"}' --header "Content-Type: application/json" http://https://movie-ticket-akka.herokuapp.com/v1/movies/
+
+
 curl http://localhost:9000/v1/movies/tt0111161/sessions/
 curl --data '{"screenId": "screen_123456", "imdbid": "tt0111161", "availableSeats": 5}' --header "Content-Type: application/json" http://localhost:9000/v1/movies/tt0111161/sessions
 curl http://localhost:9000/v1/movies/tt0111161/sessions/screen_123456
