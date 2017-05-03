@@ -12,12 +12,15 @@ trait MovieSessionsService extends MovieSessionTable {
 
   import driver.api._
 
-  def getSessions(movieId: String): Future[Seq[MovieSession]] = db.run(movieSessions.filter(_.imdbid === movieId).result)
+  def getSessions(movieId: String): Future[Seq[MovieSession]] =
+    db.run(movieSessions.filter(_.imdbid === movieId).result)
 
-  def getMovieSessionsBy(reserve: Reserve): Future[Option[MovieSession]] = db.run(movieSessions.filter(m => m.screenId === reserve.screenId && m.imdbid === reserve.imdbid).result.headOption)
+  def getMovieSessionsBy(reserve: Reserve): Future[Option[MovieSession]] =
+    db.run(movieSessions.filter(m => m.screenId === reserve.screenId && m.imdbid === reserve.imdbid).result.headOption)
 
-  def createMovieSession(movie: MovieSession): Future[MovieSession] =
-    db.run(movieSessions returning movieSessions += movie)
+  def createMovieSession(movie: MovieSession): Future[Option[MovieSessionAggr]] =
+    db.run(movieSessions += movie)
+      .flatMap(_ => getMovieSessionsBy(movie.screenId, movie.imdbid))
 
   def reserveSeat(reserve: Reserve): Future[Option[MovieSessionAggr]] =
     update(

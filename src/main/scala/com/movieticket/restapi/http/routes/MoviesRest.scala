@@ -43,6 +43,10 @@ trait MoviesServiceRoute extends MoviesService with BaseServiceRoute {
     }
   }
 
-  def buildResponse(movie: Movie): MovieInfo = MovieInfo(movie.imdbid, movie.title, Seq(relation(movie.imdbid)))
-  def relation(id: String): Relation = Relation("self", s"/v1/movies/${id}")
+  def buildResponse(movie: Movie): MovieInfo = MovieInfo(movie.imdbid, movie.title, relations(movie.imdbid))
+  def relations(id: String): Seq[Relation] = Seq(
+    Relation("self", "GET", s"/v1/movies/${id}"),
+    Relation("update", "PUT", s"/v1/movies/${id}"),
+    Relation("delete", "DELETE", s"/v1/movies/${id}")
+  )
 }

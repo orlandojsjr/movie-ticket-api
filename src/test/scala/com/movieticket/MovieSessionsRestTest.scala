@@ -6,7 +6,7 @@ import org.scalatest.concurrent.ScalaFutures
 import spray.json._
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Route
-import com.movieticket.restapi.models.{ Movie, MovieSessionRequest, MovieSessionAggr, Reserve }
+import com.movieticket.restapi.models.{ Movie, MovieSessionRequest, MovieSessionAggr, MovieSessionInfo, Reserve }
 
 class MoviesSessionRestTest extends BaseServiceTest with ScalaFutures {
   val newSession = MovieSessionRequest(screenId = "1A", imdbid = "tt0111161", availableSeats = 50)
@@ -33,8 +33,7 @@ class MoviesSessionRestTest extends BaseServiceTest with ScalaFutures {
 
     "retrieve movie session by screenId and imdbid" in {
       Get(s"${path}/${currentMovieSessionTest.screenId}") ~> movieSessionsRoute ~> check {
-        responseAs[JsObject] should be(movieSessionAggr.toJson)
-        val sessionResponse = movieSessionResponseFormat.read(responseAs[JsValue])
+        val sessionResponse = movieSessionInfoFormat.read(responseAs[JsValue])
         sessionResponse.imdbid should be(movieSessionAggr.imdbid)
         sessionResponse.screenId should be(movieSessionAggr.screenId)
         sessionResponse.title should be(movieSessionAggr.title)
