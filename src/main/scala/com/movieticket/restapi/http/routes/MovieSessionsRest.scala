@@ -20,28 +20,37 @@ trait MovieSessionsServiceRoute extends MovieSessionsService with BaseServiceRou
       } ~
         post {
            entity(as[MovieSessionRequest]) { session =>
-             complete(Created -> createMovieSession(MovieSession(None, session.screenId, session.imdbid, session.availableSeats)).map(_.toJson))
+             complete(Created -> createMovieSession(session.toMovieSession).map(_.map(buildResponse(_).toJson)))
            }
         }
     } ~
     pathPrefix(Segment) { screenId =>
       get {
-          complete(getMovieSessionsBy(screenId, imdbid))
+          complete(getMovieSessionsBy(screenId, imdbid).map(_.map(buildResponse(_))))
       } ~
         pathPrefix("reserve") {
           pathEndOrSingleSlash {
             post {
               entity(as[Reserve]) { reserve =>
-                complete(reserveSeat(reserve))
+                complete(reserveSeat(reserve).map(_.map(buildResponse(_))))
               }
             } ~
               delete {
                 entity(as[Reserve]) { reserve =>
-                  complete(cancelReserve(reserve))
+                  complete(cancelReserve(reserve).map(_.map(buildResponse(_))))
                 }
               }
           }
         }
     }
   }
+
+  def buildResponse(session: MovieSessionAggr): MovieSessionInfo =
+    MovieSessionInfo(session.screenId, session.imdbid, session.title, session.availableSeats, session.reservedSeats, relations(session))
+
+  def relations(session: MovieSessionAggr): Seq[Relation] = Seq(
+    Relation("self", "GET", s"/v1/movies/${session.imdbid}/sessions/${session.screenId}"),
+    Relation("reserve", "POST", s"/v1/movies/${session.imdbid}/sessions/${session.screenId}/reserve"),
+    Relation("cancel_reserve", "DELETE", s"/v1/movies/${session.imdbid}/sessions/${session.screenId}/reserve")
+  )
 }

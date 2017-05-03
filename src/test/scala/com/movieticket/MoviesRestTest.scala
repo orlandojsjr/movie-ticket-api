@@ -15,13 +15,17 @@ class MoviesRestTest extends BaseServiceTest with ScalaFutures {
   "Movies rest" should {
     "retrieve movies list" in {
       Get("/movies") ~> moviesRoute ~> check {
-        responseAs[JsArray] should be(testMovies.toJson)
+        response.status should be(StatusCodes.OK)
+        responseAs[JsArray].toString().contains(currentMovieTest.imdbid) should be(true)
       }
     }
 
     "retrieve movie by imdb" in {
       Get(s"/movies/${currentMovieTest.imdbid}") ~> moviesRoute ~> check {
-        responseAs[JsObject] should be(currentMovieTest.toJson)
+        response.status should be(StatusCodes.OK)
+        val movieResponse = movieInfoFormat.read(responseAs[JsValue])
+        movieResponse.imdbid should be(currentMovieTest.imdbid)
+        movieResponse.title should be(currentMovieTest.title)
       }
     }
 
@@ -39,7 +43,9 @@ class MoviesRestTest extends BaseServiceTest with ScalaFutures {
       val newMovieTitle = "new title"
       val requestEntity = HttpEntity(MediaTypes.`application/json`, JsObject("imdbid" -> JsString(newMovie.imdbid), "title" -> JsString(newMovieTitle)).toString())
       Put(s"/movies/${currentMovieTest.imdbid}", requestEntity) ~> moviesRoute ~> check {
-        responseAs[JsObject] should be(currentMovieTest.copy(title = newMovieTitle).toJson)
+        val movieResponse = movieInfoFormat.read(responseAs[JsValue])
+        movieResponse.imdbid should be(currentMovieTest.imdbid)
+        movieResponse.title should be(newMovieTitle)
         whenReady(getMovieById(currentMovieTest.imdbid)) { result =>
           result.get.title should be(newMovieTitle)
         }
