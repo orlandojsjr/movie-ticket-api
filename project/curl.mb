@@ -1,0 +1,22 @@
+get movies
+curl http://localhost:9000/v1/movies/
+
+create movie
+curl --data '{"imdbid": "tt0111161", "title": "The Shawshank Redemption"}' --header "Content-Type: application/json" http://localhost:9000/v1/movies/
+
+update movie
+curl -X PUT --data '{"imdbid": "tt0111161", "title": "The Shawshank Redemption 2"}' --header "Content-Type: application/json" http://localhost:9000/v1/movies/tt0111161
+
+
+get sessions
+curl http://localhost:9000/v1/movies/tt0111161/sessions/
+curl http://localhost:9000/v1/movies/tt0111161/sessions/screen_123456
+
+create a session
+curl --data '{"screenId": "screen_123456", "imdbid": "tt0111161", "availableSeats": 5}' --header "Content-Type: application/json" http://localhost:9000/v1/movies/tt0111161/sessions
+
+reserve a seat
+curl --data '{"screenId": "screen_123456", "imdbid": "tt0111161"}' --header "Content-Type: application/json" http://localhost:9000/v1/movies/tt0111161/sessions/screen_123456/reserve
+
+cancel a reserve
+curl -X DELETE --data '{"screenId": "screen_123456", "imdbid": "tt0111161"}' --header "Content-Type: application/json" http://localhost:9000/v1/movies/tt0111161/sessions/screen_123456/reserve
