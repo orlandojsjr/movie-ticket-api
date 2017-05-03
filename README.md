@@ -17,7 +17,7 @@ REST API for to manage reserves in a movie session
 On [Apiary](http://docs.movieticketapi.apiary.io/#)
 
 ## In Action
-Application deployed on heroku and can be accessed by URL [http://movie-ticket-api.herokuapp.com/]https://movie-ticket-api.herokuapp.com/v1/movies). First request can take some time, because heroku launch up project.
+Application deployed on heroku and can be accessed by URL [http://movie-ticket-api.herokuapp.com/](https://movie-ticket-api.herokuapp.com/v1/movies). First request can take some time, because heroku launch up project.
 
 ## Run application
 To run application, call:
