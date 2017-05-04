@@ -2,7 +2,7 @@ Movie Ticket API
 =========================
 
 
-[![Build Status](https://travis-ci.org/orlandojsjr/movie-ticket.svg?branch=travis)](https://travis-ci.org/orlandojsjr/movie-ticket)
+[![Build Status](https://travis-ci.org/orlandojsjr/movie-ticket-api.svg?branch=travis)](https://travis-ci.org/orlandojsjr/movie-ticket-api)
 
 Typesafe stack with Akka and Slick.
 REST API for to manage reserves in a movie session
