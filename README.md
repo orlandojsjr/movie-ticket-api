@@ -13,7 +13,7 @@ REST API for to manage reserves in a movie session
 * Reserve a seat for a session
 * Cancel a reserve seat for a session
 
-## API Documentarion
+## API Documentation
 On [Apiary](http://docs.movieticketapi.apiary.io/#)
 
 ## In Action
